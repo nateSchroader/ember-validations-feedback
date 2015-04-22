@@ -1,6 +1,6 @@
 {
   "name": "ember-validations-feedback",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A feedback component intented to work along with ember-validations and bootstrap",
   "directories": {
     "doc": "doc",

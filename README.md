@@ -2,7 +2,7 @@
 
 ## Installation
 
-`ember install:addon ember-validation-feedback`
+`ember install ember-validations-feedback`
 
 ## Running
 
