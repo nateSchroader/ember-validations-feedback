@@ -1,3 +1,18 @@
-<h2 id="title">Welcome to Ember.js</h2>
-
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 form-group">
+            <h2 id="title">Ember Validations Feedback</h2>
+        </div>
+        <div class="col-xs-4">
+            <div class="form-group has-feedback">
+                <label for="email" class="control-label">Email</label>
+                {{input id="email" type="email" class="form-control" value=email}}
+                {{validation-feedback errors=errors validated=validated}}
+            </div>
+        </div>
+        <div class="col-xs-12 form-group">
+            <button class="btn btn-success" type="button" {{action 'validate'}}>Validate</button>
+        </div>
+    </div>
+</div>
 {{outlet}}
