@@ -1,8 +1,11 @@
 import Ember from 'ember';
+import layout from '../templates/components/validation-feedback';
+
 const computed = Ember.computed;
 const observer = Ember.observer;
 
 export default Ember.Component.extend( {
+    layout: layout,
     classNames: [ 'help-block' ],
     tagName: 'span',
     validated: true,

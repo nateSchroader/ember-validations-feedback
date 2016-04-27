@@ -1,2 +1,1 @@
-import validationFeedback from 'ember-validations-feedback/components/validation-feedback';
-export default validationFeedback;
+export { default } from 'ember-validations-feedback/components/validation-feedback';
