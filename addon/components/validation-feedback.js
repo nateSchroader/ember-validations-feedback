@@ -1,10 +1,9 @@
 import Ember from 'ember';
 import layout from '../templates/components/validation-feedback';
 
-const computed = Ember.computed;
-const observer = Ember.observer;
+const { Component, computed, observer, run: { schedule } } = Ember;
 
-export default Ember.Component.extend( {
+export default Component.extend( {
     layout: layout,
     classNames: [ 'help-block' ],
     tagName: 'span',
@@ -34,14 +33,16 @@ export default Ember.Component.extend( {
     } ),
 
     didInsertElement: function(){
-        this._super();
-        if( this.get( 'validated' ) ){
-            this._showErrors();
-        }
+        this._super.apply( this, arguments );
+
+        schedule( 'sync', this, function(){
+            if( this.get( 'validated' ) ){
+                this._showErrors();
+            }
+        } );
     },
 
     _showErrors: function(){
-        var _this = this;
         var errors = this.get( 'errors' );
         var errorClass = this.get( 'errorClass' );
         var wrapperClass = this.get( 'wrapperClass' );

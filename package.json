@@ -1,7 +1,7 @@
 {
     "name": "ember-validations-feedback",
-    "version": "2.0.0",
-    "description": "The default blueprint for ember-cli addons.",
+    "version": "2.0.1",
+    "description": "A lightweight display for validation errors",
     "directories": {
         "doc": "doc",
         "test": "tests"
