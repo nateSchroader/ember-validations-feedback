@@ -9,40 +9,65 @@ export default Component.extend( {
     tagName: 'span',
     validated: false,
     errors: [],
+    errorIndex: null,
     errorClass: 'has-error',
     wrapperClass: 'has-feedback',
 
-    errorMessage: computed( 'errors', function(){
-        var message = '';
-        var errors = this.get( 'errors' );
-
-        if( !Ember.isEmpty( errors ) && Array.isArray( errors ) ){
-            errors.forEach( function( value ){
-                message += value + '<br>';
-            } );
-        }
-
-        return message;
-    } ),
-
-    validatedDidChange: observer( 'validated', 'errors', function(){
+    validatedDidChange: observer( 'validated', function(){
         this._showErrors();
     } ),
 
-    didInsertElement: function(){
+    errorMessageDidChange: observer( 'errorMessage', function(){
+        this._showErrors();
+    } ),
+
+    init: function(){
         this._super.apply( this, arguments );
 
+        this.set( 'errorMessage', this.getErrorMessageComputedProperty() );
         run.scheduleOnce( 'afterRender', this, this._showErrors );
     },
 
+    getErrorMessageComputedProperty: function(){
+        var errorIndex = this.get( 'errorIndex' );
+
+        var watchIndexes = [
+            'errors'
+        ];
+
+        if( errorIndex !== null ){
+            watchIndexes.push( 'errors.' + errorIndex );
+        }
+
+        watchIndexes.push( function(){
+            var message = '';
+            var errors = this.get( 'errors' );
+            var errorIndex = this.get( 'errorIndex' );
+            var errorMessages = errors;
+
+            if( errorIndex !== null ){
+                errorMessages = errors.get( errorIndex );
+            }
+
+            if( !Ember.isEmpty( errorMessages ) && Array.isArray( errorMessages ) ){
+                errorMessages.forEach( function( value ){
+                    message += value + '<br>';
+                } );
+            }
+
+            return message;
+        } );
+
+        return computed.apply( this, watchIndexes );
+    },
+
     _showErrors: function(){
-        var errors = this.get( 'errors' );
+        var errorMessages = this.get( 'errorMessage' );
         var errorClass = this.get( 'errorClass' );
         var wrapperClass = this.get( 'wrapperClass' );
-        var validated = this.get( 'validated' );
         var wrapper = this.$().parent( '.' + wrapperClass );
 
-        if( !Ember.isEmpty( errors ) && validated ){
+        if( !Ember.isEmpty( errorMessages ) && this.get( 'validated' ) ){
             wrapper.addClass( errorClass );
         }
         else{
