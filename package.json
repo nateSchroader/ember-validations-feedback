@@ -1,6 +1,6 @@
 {
     "name": "ember-validations-feedback",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "A lightweight display for validation errors",
     "directories": {
         "doc": "doc",
