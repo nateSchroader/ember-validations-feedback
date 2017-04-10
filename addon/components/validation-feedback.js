@@ -1,15 +1,14 @@
 import Ember from 'ember';
 import layout from '../templates/components/validation-feedback';
 
-const { Component, computed, observer, run: { schedule } } = Ember;
+const { Component, computed, observer, run } = Ember;
 
 export default Component.extend( {
     layout: layout,
     classNames: [ 'help-block' ],
     tagName: 'span',
-    validated: true,
+    validated: false,
     errors: [],
-    displayErrors: false,
     errorClass: 'has-error',
     wrapperClass: 'has-feedback',
 
@@ -26,31 +25,24 @@ export default Component.extend( {
         return message;
     } ),
 
-    validatedWatcher: observer( 'validated', 'errors', function(){
-        if( this.get( 'validated' ) ){
-            this._showErrors();
-        }
+    validatedDidChange: observer( 'validated', 'errors', function(){
+        this._showErrors();
     } ),
 
     didInsertElement: function(){
         this._super.apply( this, arguments );
 
-        schedule( 'sync', this, function(){
-            if( this.get( 'validated' ) ){
-                this._showErrors();
-            }
-        } );
+        run.scheduleOnce( 'afterRender', this, this._showErrors );
     },
 
     _showErrors: function(){
         var errors = this.get( 'errors' );
         var errorClass = this.get( 'errorClass' );
         var wrapperClass = this.get( 'wrapperClass' );
+        var validated = this.get( 'validated' );
         var wrapper = this.$().parent( '.' + wrapperClass );
 
-        this.set( 'displayErrors', !Ember.isEmpty( errors ) );
-
-        if( !Ember.isEmpty( errors ) ){
+        if( !Ember.isEmpty( errors ) && validated ){
             wrapper.addClass( errorClass );
         }
         else{
